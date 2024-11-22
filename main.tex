@@ -3,6 +3,8 @@
 \usepackage{hyperref}
 \usepackage{geometry}
 \usepackage{longtable}
+\usepackage{float}
+\usepackage{tikz}
 
 \geometry{a4paper, margin=1in}
 
@@ -71,24 +73,47 @@ Annotated data includes:
     \item Forklift proximity and speed.
 \end{itemize}
 
-\section{Data Pipeline (25 Points)}
-\subsection{Pipeline Overview}
+\section{Data Pipeline}
+\subsection{Training Data Pipeline}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{training_pipeline.png}
+    \caption{Training data pipeline diagram}
+    \label{fig:pipeline1}
+\end{figure}
+
 \begin{enumerate}
-    \item \textbf{Data Collection:} CCTV footage and publicly available datasets.
+    \item \textbf{Data Collection:} CCTV footage and publicly available datasets. Publicly available datasets may need to be preprocessed and/or re-annotated.
     \item \textbf{Preprocessing:} Frame extraction, resizing, and augmentation.
-    \item \textbf{YOLOv8 Model Training:} Transfer learning on annotated datasets.
-    \item \textbf{Hazard Detection:} Real-time frame analysis and flagging.
-    \item \textbf{Post-Processing:} Contextual filtering to reduce false positives.
-    \item \textbf{Storage:} Secure recording of detected hazards and associated data.
+    \item \textbf{Data annotation:} Annotate frames manually.
+    \item \textbf{YOLO Model Training:} Transfer learning on annotated datasets.    
+    \item \textbf{Post-Processing algorithms testing:} Contextual filtering to detect hazards based on relationship of detecteions. Experiment with different methods to find most accurate for our purpose.
+    \item \textbf{Storage:} Privately stored recording of CCTV clips, annotated frames and associated data.
 \end{enumerate}
 
-% \subsection{Pipeline Diagram}
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=\textwidth]{pipeline_diagram_placeholder.png}
-%     \caption{Data Pipeline Flowchart}
-%     \label{fig:pipeline}
-% \end{figure}
+\subsection{Live Data Pipeline}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{yolo_module.png}
+    \caption{YOLO module: $\leq4$ YOLO models running in parallel}
+    \label{fig:yolo}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{complete_pipeline.png}
+    \caption{Live Data pipeline diagram}
+    \label{fig:pipeline2}
+\end{figure}
+
+\begin{enumerate}
+    \item \textbf{CCTV cameras}: Live video stream from CCTV cameras.
+    \item \textbf{YOLO module}: $\leq$4 YOLO models running in parallel, each finetuned for a detection of safety-relevant objects.
+    \item \textbf{Post Processing}: Heuristic and non-heuristic algorithms to recognize hazards via relationships of detected objects.
+    \item \textbf{Database}: Relational database for statistics and records.
+    \item \textbf{Hard drive}: Clips stored locally on server machine.
+    \item \textbf{Frontend Web App}: An admin dashboard to look at annotated camera footage and statistics.
+\end{enumerate}
 
 \section{Technical Details (20 Points)}
 \subsection{Tools and Technologies}
