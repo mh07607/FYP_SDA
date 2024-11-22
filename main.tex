@@ -84,25 +84,59 @@ The safe paths and restricted areas are pre-defined as per Dawlence requirement.
 \subsection{Database Design}
 The system database manages:
 \begin{itemize}
-    \item \textbf{Hazard Events:} Records details such as timestamp, camera location, hazard type, and alert status.
-    \item \textbf{User Data:} Stores user roles and permissions for secure system access.
-    \item \textbf{Video Metadata:} Tracks file locations and annotations for incident playback.
+    \item \textbf{Hazard Events and Data:} 
+    \begin{itemize}
+        \item Ensures scalability through an extensible Hazards Table, ensuring new hazards can be added without modifying exisiting relationships
+        \item Records Hazard Detection with details such as timestamp, camera, hazard type, and alert status.
+        \item Records additional data for certain Hazards, such as Speed and OperatorId for Forklifts and MachineId and OperatoId for Hydralic Press
+    \end{itemize}
+    \item \textbf{User Data:} 
+    \begin{itemize}
+    \item Stores user roles and permissions for secure system access.
+    \item Stores Session Logs for additional security
+    \item Keeps track of Notifications sent to users including timestamps for when the notification was sent, to who and with what details
+    \end{itemize}
+    \item \textbf{Worker Data}
+    \begin{itemize}
+    \item Stores WorkerIds, Names and Jobtitles
+    \end{itemize}
+    \item \textbf{Camera Data}
+    \begin{itemize}
+    \item Stores Important Camera infromation including IP-Address which would be required to access live footage
+    \item Ensures Scalability for additional camera's which may be installed in different areas apart from the Steel Plate Workshop
+    \end{itemize}
+    \item \textbf{Video Metadata:}
+    \begin{itemize} 
+    \item Tracks file path and annotations for incident playback.
+    \item Stores file path to clips of each Hazard
+    \end{itemize}
 \end{itemize}
 
-% \subsection{Entity-Relationship Diagram}
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=\textwidth]{er_diagram_placeholder.png}
-%     \caption{Entity-Relationship Diagram for Data Management}
-%     \label{fig:er_diagram}
-% \end{figure}
+\subsection{Entity-Relationship Diagram}
+\begin{figure}[H] % Use [H] to force exact placement
+    \centering
+    \includegraphics[width=\textwidth]{ERD.png}
+    \caption{Entity-Relationship Diagram for Data Management}
+    \label{fig:er_diagram}
+\end{figure}
 
 \subsection{Data Annotations}
-Annotated data includes:
+The annotated data for the system includes the following:
+
 \begin{itemize}
-    \item PPE compliance (e.g., gloves, shoes).
-    \item Hazard zones and restricted area boundaries.
-    \item Forklift proximity and speed.
+    \item \textbf{PPE Compliance:}  
+    This includes detecting compliance with safety equipment, such as gloves and shoes. Due to the variety of gloves used at Dawlence, the system will focus on detecting the presence of hands, implying the absence of gloves. For hand detection, the following dataset has been utilized:  
+    \url{https://www.kaggle.com/datasets/armannikkhah/hand-dataset/data}
+    
+    \item \textbf{Hazard Zones and Restricted Area Boundaries:}  
+    This involves detecting individuals entering restricted zones. The current YOLOv8 models are capable of person detection without requiring fine-tuning. Restricted zones will be defined using pixel coordinates extracted from live footage of static cameras and correlated with real-world distance measurements.
+    
+    \item \textbf{Forklift Proximity and Speed:}  
+    The system monitors forklifts for proximity to workers and speed violations. The dataset used for this functionality is currently under evaluation and integration.
+    
+    \item \textbf{Fall Detection:}  
+    The system detects worker falls using a dataset sourced from the following repository:  
+    \url{https://github.com/andmydignity/fall_detection_yolov8s}
 \end{itemize}
 
 \section{Data Pipeline}
