@@ -30,20 +30,52 @@ The system comprises the following major components:
     \item \textbf{Notification System:} Delivers alerts via dashboard, email, and SMS.
 \end{itemize}
 
-% \subsection{System Block Diagram}
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=\textwidth]{architecture_diagram_placeholder.png}
-%     \caption{Directed System Block Diagram}
-%     \label{fig:architecture}
-% \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale = 0.8]{system_block.png}
+    \caption{System Block Diagram}
+\end{figure}
+Fig.1  shows how inputs and outputs are processed through the system.
+The system recieves input from CCTV cameras, processes it through the YOLO models, 
+and stores the data in the backend server. The web-based dashboard visualizes an annotated
+view of the CCTV input (annotations done by deep learning models) as well as
+presents the user with statistics of past hazard detections (created using stored data) 
+The notification system alerts relevant personnel of any detected hazards. Currently, the notification system is an automated
+email to the supervisor as well as a desktop notification to the dashboard user.
 
-\subsection{Design Principles}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{system_flow.png}
+    \caption{System Flow Diagram}
+\end{figure}
+Fig.2 shows a more detailed view of each detection and when they're triggered. 
+Once our system recieves the CCTV footage, YOLO models analyse it frame by frame
+to detect the presence and location (in pixel coordinates) of people, forklifts,
+bare hands, and obstacles. 
+
+The models detect the following objects (for the given reasons):
 \begin{itemize}
-    \item Modular and scalable architecture to support future industrial expansions.
-    \item Real-time processing with minimal latency for critical alerts.
-    \item Robust security and data privacy measures.
+    \item \textbf{People:} 
+    \begin{itemize}
+        \item Fall detection
+        \item Entry of restricted areas
+        \item Safe distance between forklift and workers
+        \item Improper machinery usage (e.g., standing on conveyor belts)
+    \end{itemize}
+    \item \textbf{Forklifts:}
+    \begin{itemize}
+        \item Speeding
+        \item Proximity to workers
+        \item Adherence to designated paths
+    \end{itemize}
+    \item \textbf{Bare Hands:} To check for PPE compliance.
+    \item \textbf{Obstacles:} To check for path obstructions.
+
 \end{itemize}
+The safe paths and restricted areas are pre-defined as per Dawlence requirement. 
+
 
 \newpage
 \section{Data Model (25 Points)}
