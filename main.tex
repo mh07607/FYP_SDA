@@ -19,7 +19,7 @@
 \newpage
 
 \section{Introduction}
-This document outlines the Software Design Specification (SDS) for the Real-Time Safety Monitoring System designed for Dawlence’s sheet metal plant in Karachi. It expands upon the system requirements specified in the SRS document, focusing on the architecture, data model, pipeline, and technical implementation.
+This document outlines the Software Design Specification (SDS) for the Real-Time Safety Monitoring System designed for Dawlence’s sheet metal plant in Karachi. It expands upon the system requirements specified in the SRS document by describing how the software requirements will be implemented. This SDS will provide a detailed overview of the system architecture, data model, data pipeline, and technical implementation.
 
 \section{Project Architecture (30 Points)}
 \subsection{System Overview}
@@ -148,27 +148,36 @@ Annotated data includes:
 \end{enumerate}
 
 \section{Technical Details (20 Points)}
+The Technical Details section of our Software Design Specification Document 
+will provide a detailed overview of the tools and technologies used in the 
+development of the Real-Time Safety Monitoring System and how they will meet 
+the requirements specified in the SRS document.
 \subsection{Tools and Technologies}
+Below are the tools and technologies we are using for the development of this system:
 \begin{itemize}
-    \item \textbf{Deep Learning Framework:} PyTorch.
-    \item \textbf{Model:} YOLOv8 for object detection.
-    \item \textbf{Frontend:} ReactJS.
-    \item \textbf{Backend:} Django and MSSQL.
-    \item \textbf{Notification Channels:} Email (SMTP), SMS (Twilio API).
+    \item \textbf{Model Finetuning for specific tasks:} PyTorch and CUDA.
+    \item \textbf{Model:} YOLOv8 and its finetuned versions for detection tasks.
+    \item \textbf{Frontend:} ReactJS (Usage of graph libraries like Chart.js for visualizations).
+    \item \textbf{Backend:} Flask.
+    \item \textbf{Database:} MSSQL (Usage of relational database for hazard records).
+    \item \textbf{Notification Channels:} Email (SMTP-based library: smtplib), SMS (Twilio API).
 \end{itemize}
 
 \subsection{Performance Metrics}
+Below are the performance metrics for the Real-Time Safety Monitoring System:
 \begin{itemize}
-    \item Latency: Maximum of 5 seconds for hazard detection and alert delivery.
-    \item Accuracy: 85\% minimum detection rate under standard conditions.
-    \item Frame Rate: Processing at least 5 frames per second.
+    \item Latency: The requirement of a maximum of 5 seconds for hazard detection and alert delivery is planned to be met using asynchronous processing for fast alert delivery, and for the detection part, we plan to use a combination approaches such as usage of optimized YOLO models, model quantization, etc.
+    \item Accuracy: The requirement of 85\% minimum detection rate under standard conditions is planned to be met by using deep learning approaches such as addition in dataset using synthetic images generated from GANs, ensemblng, transfer learning, Data Augmentation, Knowledge Distillation, and other techniques.
+    \item Frame Rate: We aim to achieve a minimum of 5 frames per second for real-time processing by techniques described in the section about latency optimization.
 \end{itemize}
 
 \subsection{Security Features}
+We will achieve sound safety protocols by having:
 \begin{itemize}
-    \item Encrypted communication between components.
+    \item Encrypted communication between components for which we will develop secure APIs, and use HTTPS for web-based communication.
     \item Role-based access controls for user management.
     \item Multi-factor authentication for dashboard login.
+    \item Regular security audits and penetration testing (using tools such as Vulert, OWASP ZAP, SonarQube, etc.).
 \end{itemize}
 
 \newpage
